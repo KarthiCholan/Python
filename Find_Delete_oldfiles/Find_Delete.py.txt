@@ -1,0 +1,48 @@
+
+
+
+import os
+import datetime
+
+def get_files_older_than_days(folder_path, days):
+    # Get current date
+    current_date = datetime.datetime.now()
+
+    # Calculate threshold date
+    threshold_date = current_date - datetime.timedelta(days=days)
+
+    # List files older than the threshold date
+    older_files = []
+    for root, dirs, files in os.walk(folder_path):
+        for file in files:
+            file_path = os.path.join(root, file)
+            file_modified_time = datetime.datetime.fromtimestamp(os.path.getmtime(file_path))
+            if file_modified_time < threshold_date:
+                older_files.append(file_path)
+
+    return older_files
+
+def delete_files(files):
+    if not files:
+        print("No files to delete.")
+        return
+
+    print("Files older than the specified days:")
+    for file in files:
+        print(file)
+
+    confirmation = input("Do you want to delete these files? (yes/no): ")
+
+    if confirmation.lower() == "yes":
+        for file in files:
+            os.remove(file)
+        print("Files deleted successfully.")
+    else:
+        print("Deletion aborted.")
+
+if __name__ == "__main__":
+    folder_path = input("Enter folder path: ")
+    days = int(input("Enter number of days: "))
+
+    older_files = get_files_older_than_days(folder_path, days)
+    delete_files(older_files)
