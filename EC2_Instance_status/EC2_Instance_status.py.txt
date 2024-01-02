@@ -1,0 +1,15 @@
+import boto3
+
+# Create an EC2 client
+ec2_client = boto3.client('ec2')
+
+# Get all regions
+regions = [region['RegionName'] for region in ec2_client.describe_regions()['Regions']]
+
+# Loop through each region and list EC2 instances
+for region in regions:
+    print(f"Instances in region: {region}")
+    ec2 = boto3.resource('ec2', region_name=region)
+    instances = ec2.instances.filter()
+    for instance in instances:
+        print(f"Instance ID: {instance.id}, Status: {instance.state['Name']}")
