@@ -1,0 +1,16 @@
+import boto3
+import datetime
+
+def lambda_handler(event, context):
+    ec2 = boto3.client('ec2')
+
+    # Get a list of all EBS volumes in your account
+    volumes = ec2.describe_volumes()['Volumes']
+
+    for volume in volumes:
+        # Create a snapshot for each volume
+        snapshot = ec2.create_snapshot(
+            VolumeId=volume['VolumeId'],
+            Description='Automated snapshot ' + datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+        )
+        print(f"Snapshot {snapshot['SnapshotId']} created for volume {volume['VolumeId']}")
