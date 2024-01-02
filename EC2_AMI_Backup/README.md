@@ -1,1 +1,1 @@
-# Python program to find and delete X Days old files
+# Python program to automate EC2 AMI (Amazon Machine Image) backups
