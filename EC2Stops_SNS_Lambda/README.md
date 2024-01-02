@@ -1,5 +1,4 @@
-# Steps to configure to trigger SNS Notification when EC2 stops using AWS Lambda and Cloud Watch Events
-
+# Steps to configure to trigger SNS Notification when EC2 stops using AWS Lambda and AWS EventBridge
 1. Create an SNS Topic
 Go to the Amazon SNS console.
 Click "Create topic" and provide a name and a display name.
@@ -10,7 +9,7 @@ Create an IAM role that grants the Lambda function permission to publish message
 3. Write Lambda Function
 Write a Lambda function that will be triggered by the CloudWatch Event when an EC2 instance changes state to 'stopped'.
 
-4. Configure CloudWatch Event Rule
+4. Configure AWS Event Bridge Rule
 Go to the Amazon CloudWatch console.
 Click on "Create rule".
 Under "Event Source", select "Event Pattern".
