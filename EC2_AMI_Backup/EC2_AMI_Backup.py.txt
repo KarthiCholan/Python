@@ -1,0 +1,45 @@
+import boto3
+import datetime
+
+# Define AWS credentials and region
+aws_access_key = 'YOUR_ACCESS_KEY'
+aws_secret_key = 'YOUR_SECRET_KEY'
+aws_region = 'YOUR_REGION'
+
+# Initialize the EC2 client
+ec2_client = boto3.client(
+    'ec2',
+    aws_access_key_id=aws_access_key,
+    aws_secret_access_key=aws_secret_key,
+    region_name=aws_region
+)
+
+# Function to create an AMI of the specified instance
+def create_ami(instance_id):
+    timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    ami_name = f"AMI_Backup_{instance_id}_{timestamp}"
+    
+    response = ec2_client.create_image(
+        InstanceId=instance_id,
+        Name=ami_name,
+        NoReboot=True  # Optionally set to True if you want to avoid rebooting the instance for the AMI
+    )
+    
+    return response['ImageId']
+
+# Function to list all EC2 instances
+def list_instances():
+    response = ec2_client.describe_instances()
+    instances = []
+    for reservation in response['Reservations']:
+        for instance in reservation['Instances']:
+            instances.append(instance['InstanceId'])
+    return instances
+
+# Specify the instances for which you want to create AMIs
+instances_to_backup = ['INSTANCE_ID_1', 'INSTANCE_ID_2']  # Replace with your instance IDs
+
+# Create AMIs for specified instances
+for instance_id in instances_to_backup:
+    ami_id = create_ami(instance_id)
+    print(f"Created AMI {ami_id} for instance {instance_id}")
