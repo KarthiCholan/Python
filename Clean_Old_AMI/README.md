@@ -1,4 +1,4 @@
-# Python program to clean old AMI  based certain criteria SUCH AS age, tags
+# Python program to clean old AMI  based certain criteria such as age, tags
 
 
 Cleaning by Age:
