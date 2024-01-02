@@ -4,7 +4,9 @@
 Create an IAM role that provides necessary permissions to start and stop EC2 instances. Attach policies like AmazonEC2FullAccess (for demonstration purposes) or create a custom policy with more restricted permissions.
 
 2. Write Lambda Functions
+
 3. Set Up AWS EventBridge to Trigger Lambda Functions
+
 Start EC2 Instances:
 Go to the AWS EventBridge  console.
 Click on "Create rule".
