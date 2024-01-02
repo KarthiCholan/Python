@@ -1,4 +1,4 @@
-# Python program to send SNS Notification when EC2 stops
+# Steps to configure to trigger SNS Notification when EC2 stops using AWS Lambda and Cloud Watch Events
 
 1. Create an SNS Topic
 Go to the Amazon SNS console.
