@@ -1,0 +1,19 @@
+
+
+#Criteria-Tags
+
+import boto3
+
+def clean_amis_by_tags(ec2_client, tag_key, tag_value):
+    filters = [{'Name': f'tag:{tag_key}', 'Values': [tag_value]}]
+    images = ec2_client.describe_images(Filters=filters)['Images']
+
+    for image in images:
+        print(f"Deregistering AMI: {image['ImageId']}")
+        ec2_client.deregister_image(ImageId=image['ImageId'])
+
+# Usage
+ec2 = boto3.client('ec2', region_name='your-region')
+tag_key = 'your-tag-key'
+tag_value = 'your-tag-value'
+clean_amis_by_tags(ec2, tag_key, tag_value)

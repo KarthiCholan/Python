@@ -1,0 +1,27 @@
+
+
+
+#Criteria-Age
+import boto3
+from datetime import datetime, timedelta
+
+def clean_old_amis_by_age(ec2_client, days_threshold):
+    images = ec2_client.describe_images(Owners=['self'])['Images']
+    current_time = datetime.utcnow()
+
+    for image in images:
+        creation_time = image['CreationDate']
+        image_time = datetime.strptime(creation_time, "%Y-%m-%dT%H:%M:%S.%fZ")
+        age = current_time - image_time
+
+        if age.days > days_threshold:
+            print(f"Deregistering AMI: {image['ImageId']} (Created: {creation_time})")
+            ec2_client.deregister_image(ImageId=image['ImageId'])
+
+# Usage
+ec2 = boto3.client('ec2', region_name='your-region')
+days_threshold = 30  # Set your desired threshold
+clean_old_amis_by_age(ec2, days_threshold)
+
+
+
