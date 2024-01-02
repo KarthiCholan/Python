@@ -1,4 +1,4 @@
-#Lambda function that will be triggered by the CloudWatch Event when an EC2 instance changes state to 'stopped'
+#Lambda function that will be triggered by the AWS EventBridge when an EC2 instance changes state to 'stopped'
 import boto3
 import json
 
