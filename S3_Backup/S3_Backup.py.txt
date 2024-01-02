@@ -1,27 +1,27 @@
-
-
-
-#Criteria-Age
 import boto3
-from datetime import datetime, timedelta
+import os
 
-def clean_old_amis_by_age(ec2_client, days_threshold):
-    images = ec2_client.describe_images(Owners=['self'])['Images']
-    current_time = datetime.utcnow()
+# Initialize the S3 client
+s3 = boto3.client('s3')
 
-    for image in images:
-        creation_time = image['CreationDate']
-        image_time = datetime.strptime(creation_time, "%Y-%m-%dT%H:%M:%S.%fZ")
-        age = current_time - image_time
+def backup_to_s3(local_folder, bucket_name):
+    # List all files in the local folder
+    files_to_backup = os.listdir(local_folder)
 
-        if age.days > days_threshold:
-            print(f"Deregistering AMI: {image['ImageId']} (Created: {creation_time})")
-            ec2_client.deregister_image(ImageId=image['ImageId'])
+    # Upload each file to the specified S3 bucket
+    for file_name in files_to_backup:
+        local_file_path = os.path.join(local_folder, file_name)
+        s3_file_key = f"backup/{file_name}"  # Change 'backup/' to the desired folder structure in S3
 
-# Usage
-ec2 = boto3.client('ec2', region_name='your-region')
-days_threshold = 30  # Set your desired threshold
-clean_old_amis_by_age(ec2, days_threshold)
+        # Upload file to S3
+        s3.upload_file(local_file_path, bucket_name, s3_file_key)
+        print(f"Uploaded {file_name} to S3 bucket: {bucket_name} with key: {s3_file_key}")
 
+# Set your local folder path containing the files to be backed up
+local_backup_folder = '/path/to/local/folder'
 
+# Set the name of your S3 bucket
+s3_bucket_name = 'your_s3_bucket_name'
 
+# Call the backup function
+backup_to_s3(local_backup_folder, s3_bucket_name)
