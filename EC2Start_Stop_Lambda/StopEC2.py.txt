@@ -1,0 +1,16 @@
+#Stop EC2 Lambda Function
+import boto3
+
+ec2_client = boto3.client('ec2')
+
+def lambda_handler(event, context):
+    # Define the instance IDs you want to stop
+    instance_ids = ['instance_id_1', 'instance_id_2']  # Replace with your instance IDs
+    
+    # Stop the instances
+    ec2_client.stop_instances(InstanceIds=instance_ids)
+    
+    return {
+        'statusCode': 200,
+        'body': 'EC2 instances stopped successfully!'
+    }
