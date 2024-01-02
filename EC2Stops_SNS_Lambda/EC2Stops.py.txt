@@ -1,0 +1,28 @@
+#Lambda function that will be triggered by the CloudWatch Event when an EC2 instance changes state to 'stopped'
+import boto3
+import json
+
+sns = boto3.client('sns')
+
+def lambda_handler(event, context):
+    # Check if the event is triggered by EC2 state change
+    if event['detail-type'] == 'EC2 Instance State-change Notification':
+        instance_id = event['detail']['instance-id']
+        state = event['detail']['state']
+
+        # Check if the instance state is 'stopped'
+        if state == 'stopped':
+            sns_topic_arn = 'YOUR_SNS_TOPIC_ARN_HERE'  # Replace with your SNS topic ARN
+            message = f"EC2 instance {instance_id} has stopped."
+            
+            # Publish message to SNS topic
+            sns.publish(
+                TopicArn=sns_topic_arn,
+                Message=message,
+                Subject='EC2 Instance Stopped'
+            )
+
+            return {
+                'statusCode': 200,
+                'body': json.dumps('Notification sent successfully')
+            }
