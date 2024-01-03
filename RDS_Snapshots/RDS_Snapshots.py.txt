@@ -1,0 +1,24 @@
+import boto3
+import datetime
+
+def lambda_handler(event, context):
+    # Define AWS region
+    region = 'your-aws-region'
+
+    # Initialize RDS client
+    rds_client = boto3.client('rds', region_name=region)
+
+    # Define RDS instance(s) to snapshot
+    db_instances = ['your-rds-instance-identifier']
+
+    # Create snapshots for each RDS instance
+    for instance_id in db_instances:
+        snapshot_id = instance_id + '-' + datetime.datetime.now().strftime('%Y-%m-%d-%H-%M')
+        try:
+            response = rds_client.create_db_snapshot(
+                DBSnapshotIdentifier=snapshot_id,
+                DBInstanceIdentifier=instance_id
+            )
+            print(f"Snapshot {snapshot_id} created successfully.")
+        except Exception as e:
+            print(f"Error creating snapshot for {instance_id}: {str(e)}")
