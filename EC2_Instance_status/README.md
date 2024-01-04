@@ -3,13 +3,17 @@
 Importing the boto3 Library:
 
 boto3: The AWS SDK for Python.
+
 EC2 Client Initialization:
 
-ec2_client = boto3.client('ec2'): Creates an EC2 client.
+ec2_client = boto3.client('ec2'): 
+Creates an EC2 client.
+
 Retrieving All Regions:
 
 regions: Retrieves a list of all available regions using ec2_client.describe_regions()['Regions'].
 The list comprehension extracts the region names from the response.
+
 Looping Through Regions:
 
 Iterates through each region in the regions list.
