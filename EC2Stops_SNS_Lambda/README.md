@@ -7,7 +7,7 @@ Once created, note the ARN (Amazon Resource Name) of the SNS topic.
 Create an IAM role that grants the Lambda function permission to publish messages to your SNS topic.
 
 3. Write Lambda Function
-Write a Lambda function that will be triggered by the CloudWatch Event when an EC2 instance changes state to 'stopped'.
+Write a Lambda function that will be triggered by the AWS Eventbridge when an EC2 instance changes state to 'stopped'.
 
 4. Configure AWS Event Bridge Rule
 Go to the Amazon CloudWatch console.
